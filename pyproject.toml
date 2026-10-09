@@ -11,11 +11,10 @@ readme = "README.md"
 license = {file = "LICENSE"}
 
 [project.scripts]
-new-humanizer = "jp_writing_quality.cli:main"
-jp-writing-lint = "jp_writing_quality.cli:main"
+new-humanizer = "new_humanizer.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["jp_writing_quality*"]
+include = ["new_humanizer*"]
 
 [tool.setuptools.package-data]
-jp_writing_quality = ["rules/*.json"]
+new_humanizer = ["rules/*.json"]
