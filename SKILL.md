@@ -14,7 +14,7 @@ The checker identifies measurable indicators of potential reading difficulty; it
 ## Working assumptions
 
 - **Runtime:** Python 3.10 or later; no third-party Python packages are required to run the CLI.
-- **Root directory:** execute commands from the directory containing this `SKILL.md` and the `jp_writing_quality/` package, or otherwise ensure the package is on Python's import path. The internal Python module keeps its existing name for compatibility.
+- **Root directory:** execute commands from the directory containing this `SKILL.md` and the `new_humanizer/` package, or otherwise ensure the package is on Python's import path.
 - **Inputs:** UTF-8 Japanese Markdown or plain-text files.
 - **Profiles:** use `general` for broad-audience documents and `technical` for specifications, engineering notes, and other technical material.
 - **Rules:** use `--rules path/to/team-rules.json` to override the selected profile, when needed.
@@ -38,19 +38,19 @@ Run from the skill/project root (or use the installed `new-humanizer` command af
 
 ```bash
 # Lint a general-audience document.
-python -m jp_writing_quality lint document.md --profile general --format text --fail-on warn
+python -m new_humanizer lint document.md --profile general --format text --fail-on warn
 
 # Write a JSON report; use the process exit code to decide whether the gate passed.
-python -m jp_writing_quality lint original.md --profile technical --format json --output quality-before.json --fail-on warn
+python -m new_humanizer lint original.md --profile technical --format json --output quality-before.json --fail-on warn
 
 # Apply whitespace-only formatting to a new file; original.md stays unchanged.
-python -m jp_writing_quality fix original.md --output formatted.md
+python -m new_humanizer fix original.md --output formatted.md
 
 # Analyze a revision and compare protected elements with the original.
-python -m jp_writing_quality compare original.md revised.md --profile technical --format json --output quality-after.json --fail-on warn
+python -m new_humanizer compare original.md revised.md --profile technical --format json --output quality-after.json --fail-on warn
 
 # Use a team-specific rules file.
-python -m jp_writing_quality lint document.md --profile technical --rules team-rules.json --fail-on warn
+python -m new_humanizer lint document.md --profile technical --rules team-rules.json --fail-on warn
 
 # Run tests after modifying the checker itself.
 python -m unittest discover -s tests -v
