@@ -95,3 +95,7 @@ Use this editing constraint:
 - Reader comprehension, reading time, or actual cognitive load.
 
 A **machine-check pass** is evidence that selected *mechanical rules* passed; it is not a substitute for human review. See [README.md](README.md) and [README.ja.md](README.ja.md) for usage details.
+
+## License
+
+This project is released under **THE SUSHI-WARE LICENSE**. Retain the notice when copying or redistributing this skill and its scripts. See [LICENSE](LICENSE).
