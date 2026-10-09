@@ -18,16 +18,16 @@ Python 3.10+ を用意し、本フォルダで実行してください。`pip in
 
 ```bash
 # サンプルの品質検査（合否の閾値は--fail-onで選択）
-python -m jp_writing_quality lint fixtures/verbose.md --profile technical --format text --fail-on warn
+python -m new_humanizer lint fixtures/verbose.md --profile technical --format text --fail-on warn
 
 # JSONレポートをファイルに出力
-python -m jp_writing_quality lint fixtures/verbose.md --format json --output quality.json
+python -m new_humanizer lint fixtures/verbose.md --format json --output quality.json
 
 # 原文を変更せずに、安全な書式修正と差分を表示
-python -m jp_writing_quality fix fixtures/verbose.md --output verbose.fixed.md
+python -m new_humanizer fix fixtures/verbose.md --output verbose.fixed.md
 
 # 修正後に数値、URL、コード、出典等が消えていないか比較
-python -m jp_writing_quality compare fixtures/verbose.md fixtures/revised.md --profile technical --format json --output comparison.json
+python -m new_humanizer compare fixtures/verbose.md fixtures/revised.md --profile technical --format json --output comparison.json
 
 # 回帰テスト
 python -m unittest discover -s tests -v
@@ -35,7 +35,7 @@ python -m unittest discover -s tests -v
 
 CLIをインストールして使いたい場合は、オプションで `pip install -e .` を実行し、`new-humanizer lint ...` を使えます（ビルドツールが必要になる場合があります）。
 
-従来の `jp-writing-lint` コマンドと `python -m jp_writing_quality` モジュールは互換性のため残しています。公開するSkill名とパッケージ名は **New-Humanizer** です。
+Pythonパッケージ名は `new_humanizer`、インストール後のCLIコマンドは `new-humanizer` です。インストールせずに `python -m new_humanizer` でも実行できます。
 
 **終了コード:** `0` = 指定ゲートPASS、`1` = ルール違反でゲートFAIL、`2` = コマンドまたは入出力エラー。
 
@@ -48,7 +48,7 @@ New-Humanizer/
 ├── README.ja.md                   # 日本語版
 ├── pyproject.toml
 ├── LICENSE
-├── jp_writing_quality/
+├── new_humanizer/
 │   ├── cli.py                      # lint / fix / compare
 │   ├── analyzer.py                 # 決定的なルールと保全照合
 │   ├── parser.py                   # Markdown本文の抽出
@@ -76,8 +76,8 @@ New-Humanizer/
 このJSONを `team-rules.json` に保存すれば次のように使えます。
 
 ```bash
-python -m jp_writing_quality lint example.md --profile technical --rules team-rules.json --fail-on warn
-python -m jp_writing_quality compare original.md revised.md --profile technical --rules team-rules.json --fail-on error
+python -m new_humanizer lint example.md --profile technical --rules team-rules.json --fail-on warn
+python -m new_humanizer compare original.md revised.md --profile technical --rules team-rules.json --fail-on error
 ```
 
 `compare` は数字・単位、URL、Markdownリンク先、脚注参照、インラインコード、コードブロック、指定した `protected_terms` を照合します。**数字が一致していても意味や対応先が同じである保証はありません。** 内容の正確さは人によるレビューが必要です。
