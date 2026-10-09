@@ -116,6 +116,12 @@ A typical workflow is:
 - Kanji and katakana ratios are provided as descriptive statistics, **not pass/fail criteria**.
 - The CLI's issue messages are primarily in Japanese because the documents it analyzes are Japanese.
 
+## Inspiration and attribution
+
+New-Humanizer was inspired by the discussion of AI-generated documentation and reading fatigue in [this Qiita article by take-yoda](https://qiita.com/take-yoda/items/e5d9ce6618523af1ffc5).
+
+The project is a separately developed Python-based writing-quality checker and Agent Skill. It is **not a copy or adaptation of the article's example `design-and-ship` Skill**. The article is credited here as the starting point for the problem we set out to address.
+
 ## License
 
 **THE SUSHI-WARE LICENSE** 🍣 — you may use, modify, and redistribute this project as long as you retain the license notice. If we ever meet and you find it worthwhile, you can buy me sushi (entirely optional).
