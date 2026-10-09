@@ -91,6 +91,12 @@ python -m jp_writing_quality compare original.md revised.md --profile technical 
 - `fix` は末尾の不要な空白の除去のみ行います。Markdownの2スペース改行とコードブロックは保持します。
 - 原文と修正案の比較は同一ファイルの改稿を想定しています。コードや引用の意図的変更も検出します。
 
+## 着想と謝辞
+
+New-Humanizerは、[take-yodaさんのQiita記事](https://qiita.com/take-yoda/items/e5d9ce6618523af1ffc5)で論じられている、生成AIが作成したドキュメントの読み疲れという問題から着想を得ました。
+
+本プロジェクトのPython製文章品質チェッカーとAgent Skillは、別途設計・実装したものです。記事で紹介されている`design-and-ship` Skillをコピー・改変したものではありません。元記事を、取り組むべき課題を考えるきっかけとして紹介します。
+
 ## ライセンス
 
 **THE SUSHI-WARE LICENSE** 🍣 を採用しています。ライセンス表記を保持すれば、利用・改変・再配布は自由です。いつか会って、このソフトが役に立ったと思ったら、お寿司をご馳走してもらえると嬉しいです（任意）。
