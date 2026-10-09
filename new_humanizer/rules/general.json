@@ -1,0 +1,13 @@
+{
+  "sentence_warn_chars": 70,
+  "sentence_error_chars": 130,
+  "max_commas": 4,
+  "paragraph_warn_chars": 400,
+  "require_lead_heading": false,
+  "lead_min_chars": 600,
+  "lead_headings": ["結論", "概要", "要約", "ポイント"],
+  "redundant_phrases": ["することができます", "ということになります", "ということができます", "においては", "非常にとても"],
+  "vague_phrases": ["必要に応じて", "適切に", "十分な", "可能な限り", "なるべく"],
+  "term_variants": [["ユーザ", "ユーザー"], ["サーバ", "サーバー"], ["インタフェース", "インターフェース"]],
+  "protected_terms": []
+}
