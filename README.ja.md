@@ -33,7 +33,9 @@ python -m jp_writing_quality compare fixtures/verbose.md fixtures/revised.md --p
 python -m unittest discover -s tests -v
 ```
 
-CLIをインストールして使いたい場合は、オプションで `pip install -e .` を実行し、`jp-writing-lint lint ...` を使えます（ビルドツールが必要になる場合があります）。
+CLIをインストールして使いたい場合は、オプションで `pip install -e .` を実行し、`new-humanizer lint ...` を使えます（ビルドツールが必要になる場合があります）。
+
+従来の `jp-writing-lint` コマンドと `python -m jp_writing_quality` モジュールは互換性のため残しています。公開するSkill名とパッケージ名は **New-Humanizer** です。
 
 **終了コード:** `0` = 指定ゲートPASS、`1` = ルール違反でゲートFAIL、`2` = コマンドまたは入出力エラー。
 
@@ -82,7 +84,7 @@ python -m jp_writing_quality compare original.md revised.md --profile technical 
 
 ## Claude Code / Agentでの導入
 
-`SKILL.md` とPythonソース一式を、エージェントが参照しPythonを実行できる場所に配置してください。Claude Codeでプロジェクトスキルとして使う場合は `./.claude/skills/japanese-writing-quality/` にフォルダごと配置する方法があります。`SKILL.md` の指示どおり、**実際のCLIを動かしてレポートを提示**させてください。エージェントがコード実行できない環境では品質ゲートを満たせません。
+`SKILL.md` とPythonソース一式を、エージェントが参照しPythonを実行できる場所に配置してください。Claude Codeでプロジェクトスキルとして使う場合は `./.claude/skills/new-humanizer/` にフォルダごと配置する方法があります。`SKILL.md` の指示どおり、**実際のCLIを動かしてレポートを提示**させてください。エージェントがコード実行できない環境では品質ゲートを満たせません。
 
 ## 制限事項
 
