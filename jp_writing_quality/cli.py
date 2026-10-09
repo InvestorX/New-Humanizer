@@ -68,7 +68,7 @@ def execute(args: argparse.Namespace) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="jp-writing-lint", description="LLMを使わない日本語文章品質チェッカー")
+    parser = argparse.ArgumentParser(prog="new-humanizer", description="LLMを使わない日本語文章品質チェッカー")
     sub = parser.add_subparsers(dest="action", required=True)
     for action in ("lint", "compare", "fix"):
         p = sub.add_parser(action)
