@@ -3,14 +3,15 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "jp-writing-quality-skill"
+name = "new-humanizer"
 version = "0.1.0"
 requires-python = ">=3.10"
-description = "Deterministic Japanese writing quality checks for Agent Skills"
+description = "New-Humanizer: deterministic Japanese writing quality checks for Agent Skills"
 readme = "README.md"
 license = {file = "LICENSE"}
 
 [project.scripts]
+new-humanizer = "jp_writing_quality.cli:main"
 jp-writing-lint = "jp_writing_quality.cli:main"
 
 [tool.setuptools.packages.find]
