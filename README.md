@@ -1,90 +1,121 @@
 # New-Humanizer
 
-**AI製ドキュメントによる読み疲れからの解放**
+**Less reading fatigue from AI-generated documents.**
 
-## 日本語文章の品質チェック
+[English](README.md) | [日本語](README.ja.md)
 
+New-Humanizer is an Agent Skill and a **deterministic, Python-based writing-quality checker for Japanese Markdown and plain text**. It helps agents and authors detect *measurable writing issues* rather than relying solely on an LLM's subjective self-assessment.
 
-**日本語ドキュメントの機械的品質チェックを行う、LLM不要・Python標準ライブラリのみのAgent Skillです。**
+It does **not** directly measure cognitive load or guarantee that a document is easy to understand. Its configurable checks identify possible readability issues such as long sentences, excessive punctuation, lengthy paragraphs, repeated phrasing, inconsistent terminology, and heading structure. The tool also checks whether certain protected content changed between drafts.
 
-文章の「認知負荷」を直接測定するものではありません。**検査可能な形式品質**（文長、読点、段落長、定型表現、表記揺れ、見出し階層、修正前後の保護対象の差分）を再現可能にチェックします。
+- **Zero runtime dependencies:** Python 3.10+ standard library only.
+- **Reproducible:** configurable general/technical profiles and structured findings with severity levels.
+- **Safe-by-default edits:** the \`fix\` command only removes trailing whitespace while preserving Markdown hard breaks and fenced code blocks.
+- **Content safeguards:** the \`compare\` command detects changes to numbers/units, URLs, Markdown link destinations, reference markers, code, and explicitly configured protected terms.
+- **Auditable:** CLI exit codes, JSON output, a JSON report schema, fixtures, tests, and GitHub Actions.
 
-検査結果には漢字・カタカナ率も**参考統計**として付けます（合否には使用しません）。`schema/quality-report.schema.json` にJSONレポートの構造を示しています。
+> **Scope:** These are heuristic writing-quality checks, not scientifically validated cutoffs for human cognitive load. Treat \`REVIEW\` findings as prompts for human judgment, not proven errors.
 
-## すぐに使う
+## Quick start
 
-Python 3.10+ を用意し、本フォルダで実行してください。`pip install` は不要です。
+Run the commands from the repository root with Python 3.10 or newer. No installation is required.
 
-```bash
-# サンプルの品質検査（合否の閾値は--fail-onで選択）
+\`\`\`bash
+# Inspect a Japanese Markdown document; make WARN findings fail the gate.
 python -m jp_writing_quality lint fixtures/verbose.md --profile technical --format text --fail-on warn
 
-# JSONレポートをファイルに出力
+# Write a machine-readable JSON report.
 python -m jp_writing_quality lint fixtures/verbose.md --format json --output quality.json
 
-# 原文を変更せずに、安全な書式修正と差分を表示
+# Apply safe formatting changes to a new file, leaving the source untouched.
 python -m jp_writing_quality fix fixtures/verbose.md --output verbose.fixed.md
 
-# 修正後に数値、URL、コード、出典等が消えていないか比較
+# Inspect the revised document and check preservation of protected content.
 python -m jp_writing_quality compare fixtures/verbose.md fixtures/revised.md --profile technical --format json --output comparison.json
 
-# 回帰テスト
+# Run the regression test suite.
 python -m unittest discover -s tests -v
-```
+\`\`\`
 
-CLIをインストールして使いたい場合は、オプションで `pip install -e .` を実行し、`jp-writing-lint lint ...` を使えます（ビルドツールが必要になる場合があります）。
+Optional editable installation (may need a build backend):
 
-**終了コード:** `0` = 指定ゲートPASS、`1` = ルール違反でゲートFAIL、`2` = コマンドまたは入出力エラー。
+\`\`\`bash
+pip install -e .
+jp-writing-lint lint fixtures/verbose.md --profile technical
+\`\`\`
 
-## ファイル構成
+**Exit codes:** \`0\` = selected quality gate passed; \`1\` = findings triggered the selected quality gate; \`2\` = command, configuration, or I/O error.
 
-```text
-japanese-writing-quality-skill/
-├── SKILL.md                        # エージェント用の品質保証手順
-├── README.md
+## Repository layout
+
+\`\`\`text
+New-Humanizer/
+├── README.md                         # English documentation (default)
+├── README.ja.md                      # Japanese documentation
+├── SKILL.md                          # English instructions for AI agents
 ├── pyproject.toml
-├── LICENSE
 ├── jp_writing_quality/
-│   ├── cli.py                      # lint / fix / compare
-│   ├── analyzer.py                 # 決定的なルールと保全照合
-│   ├── parser.py                   # Markdown本文の抽出
-│   ├── fixer.py                    # 書式に限る安全修正
+│   ├── cli.py                        # lint, fix, compare
+│   ├── analyzer.py                   # deterministic checks and preservation guards
+│   ├── parser.py                     # Markdown/text extraction
+│   ├── fixer.py                      # safe whitespace-only fixes
 │   └── rules/
-│       ├── general.json           # 一般向け基準
-│       └── technical.json         # 技術文書向け基準
-├── fixtures/
-└── tests/
-```
+│       ├── general.json              # general writing profile
+│       └── technical.json            # technical writing profile
+├── fixtures/                          # positive/negative examples
+├── examples/                          # example JSON reports
+├── schema/                            # JSON report schema
+├── tests/                             # regression tests
+└── .github/workflows/quality.yml     # CI checks
+\`\`\`
 
-## ルール変更
+## Profiles and custom rules
 
-プロファイルに組み込まれた数値は、研究で検証された「認知負荷の閾値」ではなく**調整可能な初期値**です。技術ドキュメントには `--profile technical` を使ってください。
+Use \`--profile general\` for general writing and \`--profile technical\` for technical documentation.
 
-```json
+Numeric thresholds in the built-in profiles are **adjustable defaults**, not universal cognitive-load thresholds. To override them, create a JSON file such as \`team-rules.json\`:
+
+\`\`\`json
 {
   "sentence_warn_chars": 80,
   "sentence_error_chars": 140,
   "max_commas": 4,
   "protected_terms": ["Azure", "PostgreSQL", "Modbus-TCP"]
 }
-```
+\`\`\`
 
-このJSONを `team-rules.json` に保存すれば次のように使えます。
-
-```bash
-python -m jp_writing_quality lint example.md --profile technical --rules team-rules.json --fail-on warn
+\`\`\`bash
+python -m jp_writing_quality lint document.md --profile technical --rules team-rules.json --fail-on warn
 python -m jp_writing_quality compare original.md revised.md --profile technical --rules team-rules.json --fail-on error
-```
+\`\`\`
 
-`compare` は数字・単位、URL、Markdownリンク先、脚注参照、インラインコード、コードブロック、指定した `protected_terms` を照合します。**数字が一致していても意味や対応先が同じである保証はありません。** 内容の正確さは人によるレビューが必要です。
+The checker reports issues as **ERROR**, **WARN**, or **REVIEW**. Select the quality-gate strictness with \`--fail-on none|error|warn|review\`. A \`review\` threshold is the strictest; a \`none\` threshold never fails on findings.
 
-## Claude Code / Agentでの導入
+## Using the Agent Skill
 
-`SKILL.md` とPythonソース一式を、エージェントが参照しPythonを実行できる場所に配置してください。Claude Codeでプロジェクトスキルとして使う場合は `./.claude/skills/japanese-writing-quality/` にフォルダごと配置する方法があります。`SKILL.md` の指示どおり、**実際のCLIを動かしてレポートを提示**させてください。エージェントがコード実行できない環境では品質ゲートを満たせません。
+Keep \`SKILL.md\` together with the Python package and configuration files. An agent needs **both** the skill instructions and an environment in which it can run Python.
 
-## 制限事項
+For example, a Claude Code project-local skill can be placed in \`.claude/skills/japanese-writing-quality/\`. Copy the complete project content needed by the CLI, not only \`SKILL.md\`. See [SKILL.md](SKILL.md) for the agent workflow.
 
-- 自然さ、因果関係、固有名詞の完全な保全、要件の網羅性、読者の真の認知負荷は評価しません。
-- Markdownの複雑な構文の一部や表・コードなどを意図的に検査対象から除外しています。
-- `fix` は末尾の不要な空白の除去のみ行います。Markdownの2スペース改行とコードブロックは保持します。
-- 原文と修正案の比較は同一ファイルの改稿を想定しています。コードや引用の意図的変更も検出します。
+A typical workflow is:
+
+1. Save the original Japanese document.
+2. Run \`lint\`, inspect its output and exit status.
+3. Apply safe formatting or propose targeted wording changes.
+4. Run \`compare\` against the original and recheck the revised document.
+5. Report remaining findings and any changes that need human approval.
+
+**Do not claim a quality-gate pass without executing the CLI.** In an environment without code execution, the agent can make suggestions but cannot verify a deterministic gate.
+
+## Limitations
+
+- The tool does not verify factual accuracy, reasoning, causal relationships, completeness of requirements, or actual reader comprehension.
+- The preservation check compares protected elements (including counts and code blocks), **not their semantic relationships**. Keeping the same numbers does not guarantee that they still refer to the same facts.
+- Complex Markdown, tables, inline code, and fenced code blocks are partly or intentionally excluded from readability checks.
+- The safe fixer only removes trailing whitespace; it does not automatically rewrite long or vague sentences.
+- Kanji and katakana ratios are provided as descriptive statistics, **not pass/fail criteria**.
+- The CLI's issue messages are primarily in Japanese because the documents it analyzes are Japanese.
+
+## License
+
+See [LICENSE](LICENSE).
