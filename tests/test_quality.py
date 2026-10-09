@@ -3,10 +3,10 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from jp_writing_quality.analyzer import analyze, compare_preservation, fail_gate, load_rules
-from jp_writing_quality.cli import main
-from jp_writing_quality.fixer import safe_fix
-from jp_writing_quality.parser import parse_lines, prose_paragraphs
+from new_humanizer.analyzer import analyze, compare_preservation, fail_gate, load_rules
+from new_humanizer.cli import main
+from new_humanizer.fixer import safe_fix
+from new_humanizer.parser import parse_lines, prose_paragraphs
 
 
 class QualityTests(unittest.TestCase):

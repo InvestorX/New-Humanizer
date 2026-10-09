@@ -22,16 +22,16 @@ Run the commands from the repository root with Python 3.10 or newer. No installa
 
 ```bash
 # Inspect a Japanese Markdown document; make WARN findings fail the gate.
-python -m jp_writing_quality lint fixtures/verbose.md --profile technical --format text --fail-on warn
+python -m new_humanizer lint fixtures/verbose.md --profile technical --format text --fail-on warn
 
 # Write a machine-readable JSON report.
-python -m jp_writing_quality lint fixtures/verbose.md --format json --output quality.json
+python -m new_humanizer lint fixtures/verbose.md --format json --output quality.json
 
 # Apply safe formatting changes to a new file, leaving the source untouched.
-python -m jp_writing_quality fix fixtures/verbose.md --output verbose.fixed.md
+python -m new_humanizer fix fixtures/verbose.md --output verbose.fixed.md
 
 # Inspect the revised document and check preservation of protected content.
-python -m jp_writing_quality compare fixtures/verbose.md fixtures/revised.md --profile technical --format json --output comparison.json
+python -m new_humanizer compare fixtures/verbose.md fixtures/revised.md --profile technical --format json --output comparison.json
 
 # Run the regression test suite.
 python -m unittest discover -s tests -v
@@ -44,7 +44,7 @@ pip install -e .
 new-humanizer lint fixtures/verbose.md --profile technical
 ```
 
-The legacy `jp-writing-lint` entry point and `python -m jp_writing_quality` module remain available for compatibility. **New-Humanizer** is the public Skill and package name.
+The Python package is `new_humanizer`, and the installed CLI command is `new-humanizer`. Run it without installation using `python -m new_humanizer`.
 
 **Exit codes:** `0` = selected quality gate passed; `1` = findings triggered the selected quality gate; `2` = command, configuration, or I/O error.
 
@@ -56,7 +56,7 @@ New-Humanizer/
 ├── README.ja.md                      # Japanese documentation
 ├── SKILL.md                          # English instructions for AI agents
 ├── pyproject.toml
-├── jp_writing_quality/
+├── new_humanizer/
 │   ├── cli.py                        # lint, fix, compare
 │   ├── analyzer.py                   # deterministic checks and preservation guards
 │   ├── parser.py                     # Markdown/text extraction
@@ -87,8 +87,8 @@ Numeric thresholds in the built-in profiles are **adjustable defaults**, not uni
 ```
 
 ```bash
-python -m jp_writing_quality lint document.md --profile technical --rules team-rules.json --fail-on warn
-python -m jp_writing_quality compare original.md revised.md --profile technical --rules team-rules.json --fail-on error
+python -m new_humanizer lint document.md --profile technical --rules team-rules.json --fail-on warn
+python -m new_humanizer compare original.md revised.md --profile technical --rules team-rules.json --fail-on error
 ```
 
 The checker reports issues as **ERROR**, **WARN**, or **REVIEW**. Select the quality-gate strictness with `--fail-on none|error|warn|review`. A `review` threshold is the strictest; a `none` threshold never fails on findings.
