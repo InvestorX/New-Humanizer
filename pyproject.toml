@@ -8,7 +8,7 @@ version = "0.1.0"
 requires-python = ">=3.10"
 description = "Deterministic Japanese writing quality checks for Agent Skills"
 readme = "README.md"
-license = {text = "MIT"}
+license = {file = "LICENSE"}
 
 [project.scripts]
 jp-writing-lint = "jp_writing_quality.cli:main"
