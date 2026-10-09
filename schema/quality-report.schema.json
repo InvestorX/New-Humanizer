@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Japanese Writing Quality Report",
+  "title": "New-Humanizer Quality Report",
   "type": "object",
   "required": ["schema_version", "file", "metrics", "issue_counts", "findings"],
   "properties": {
