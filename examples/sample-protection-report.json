@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "file": "fixtures/protected-unsafe-rewrite.md",
+  "metrics": {
+    "source_lines": 5,
+    "prose_characters": 46,
+    "paragraphs": 2,
+    "sentences": 3,
+    "headings": 1,
+    "longest_sentence_chars": 22,
+    "mean_sentence_chars": 15.0,
+    "kanji_fraction_of_japanese_script": 0.5161,
+    "katakana_fraction_of_japanese_script": 0.129
+  },
+  "issue_counts": {
+    "ERROR": 2,
+    "WARN": 0,
+    "REVIEW": 0
+  },
+  "findings": [
+    {
+      "rule_id": "PRESERVE001",
+      "severity": "ERROR",
+      "line": 1,
+      "column": 1,
+      "excerpt": "numbers_and_units",
+      "message": "保護対象の差分を検出（numbers_and_units）。削除/変更: {'500ms': 1, '3': 1}、追加/変更: {'600ms': 1, '5': 1}",
+      "suggestion": "原文との照合と人間による承認が必要です。"
+    },
+    {
+      "rule_id": "PRESERVE001",
+      "severity": "ERROR",
+      "line": 1,
+      "column": 1,
+      "excerpt": "markdown_link_destinations",
+      "message": "保護対象の差分を検出（markdown_link_destinations）。削除/変更: {'https://example.com/spec/v1': 1}、追加/変更: {'https://example.com/spec/v2': 1}",
+      "suggestion": "原文との照合と人間による承認が必要です。"
+    }
+  ],
+  "before_metrics": {
+    "source_lines": 5,
+    "prose_characters": 46,
+    "paragraphs": 2,
+    "sentences": 3,
+    "headings": 1,
+    "longest_sentence_chars": 22,
+    "mean_sentence_chars": 15.0,
+    "kanji_fraction_of_japanese_script": 0.5161,
+    "katakana_fraction_of_japanese_script": 0.129
+  },
+  "original_file": "fixtures/protected-original.md"
+}

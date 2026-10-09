@@ -1,0 +1,26 @@
+name: quality-tests
+on:
+  push:
+  pull_request:
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax check
+        run: python -m compileall -q jp_writing_quality
+      - name: Unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Quality gate (clean fixture)
+        run: |
+          printf '# 概要\n\nシステムは正常に動作します。\n' > /tmp/clean.md
+          python -m jp_writing_quality lint /tmp/clean.md --fail-on warn
+      - name: Guard detects modified values
+        run: |
+          if python -m jp_writing_quality compare fixtures/protected-original.md fixtures/protected-unsafe-rewrite.md --fail-on error; then
+            echo 'Expected compare to fail due to modified numbers and URLs' >&2
+            exit 1
+          fi

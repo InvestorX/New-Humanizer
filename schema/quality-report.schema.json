@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Japanese Writing Quality Report",
+  "type": "object",
+  "required": ["schema_version", "file", "metrics", "issue_counts", "findings"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "file": {"type": "string"},
+    "original_file": {"type": "string"},
+    "metrics": {
+      "type": "object",
+      "required": ["source_lines", "prose_characters", "paragraphs", "sentences", "headings", "longest_sentence_chars", "mean_sentence_chars"],
+      "properties": {
+        "source_lines": {"type": "integer", "minimum": 0},
+        "prose_characters": {"type": "integer", "minimum": 0},
+        "paragraphs": {"type": "integer", "minimum": 0},
+        "sentences": {"type": "integer", "minimum": 0},
+        "headings": {"type": "integer", "minimum": 0},
+        "longest_sentence_chars": {"type": "integer", "minimum": 0},
+        "mean_sentence_chars": {"type": "number", "minimum": 0},
+        "kanji_fraction_of_japanese_script": {"type": "number", "minimum": 0, "maximum": 1},
+        "katakana_fraction_of_japanese_script": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "issue_counts": {
+      "type": "object",
+      "required": ["ERROR", "WARN", "REVIEW"],
+      "properties": {"ERROR": {"type": "integer", "minimum": 0}, "WARN": {"type": "integer", "minimum": 0}, "REVIEW": {"type": "integer", "minimum": 0}}
+    },
+    "before_metrics": {"type": "object"},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule_id", "severity", "line", "column", "excerpt", "message", "suggestion"],
+        "properties": {
+          "rule_id": {"type": "string"},
+          "severity": {"enum": ["ERROR", "WARN", "REVIEW"]},
+          "line": {"type": "integer", "minimum": 1},
+          "column": {"type": "integer", "minimum": 1},
+          "excerpt": {"type": "string"},
+          "message": {"type": "string"},
+          "suggestion": {"type": "string"}
+        }
+      }
+    }
+  }
+}
