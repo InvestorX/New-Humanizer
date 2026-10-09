@@ -41,8 +41,10 @@ Optional editable installation (may need a build backend):
 
 ```bash
 pip install -e .
-jp-writing-lint lint fixtures/verbose.md --profile technical
+new-humanizer lint fixtures/verbose.md --profile technical
 ```
+
+The legacy `jp-writing-lint` entry point and `python -m jp_writing_quality` module remain available for compatibility. **New-Humanizer** is the public Skill and package name.
 
 **Exit codes:** `0` = selected quality gate passed; `1` = findings triggered the selected quality gate; `2` = command, configuration, or I/O error.
 
@@ -95,7 +97,7 @@ The checker reports issues as **ERROR**, **WARN**, or **REVIEW**. Select the qua
 
 Keep `SKILL.md` together with the Python package and configuration files. An agent needs **both** the skill instructions and an environment in which it can run Python.
 
-For example, a Claude Code project-local skill can be placed in `.claude/skills/japanese-writing-quality/`. Copy the complete project content needed by the CLI, not only `SKILL.md`. See [SKILL.md](SKILL.md) for the agent workflow.
+For example, a Claude Code project-local skill can be placed in `.claude/skills/new-humanizer/`. Copy the complete project content needed by the CLI, not only `SKILL.md`. See [SKILL.md](SKILL.md) for the agent workflow.
 
 A typical workflow is:
 
