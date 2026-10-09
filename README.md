@@ -118,4 +118,6 @@ A typical workflow is:
 
 ## License
 
-See [LICENSE](LICENSE).
+**THE SUSHI-WARE LICENSE** 🍣 — you may use, modify, and redistribute this project as long as you retain the license notice. If we ever meet and you find it worthwhile, you can buy me sushi (entirely optional).
+
+See the full [LICENSE](LICENSE) text.
