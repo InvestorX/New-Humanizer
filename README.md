@@ -10,17 +10,17 @@ It does **not** directly measure cognitive load or guarantee that a document is 
 
 - **Zero runtime dependencies:** Python 3.10+ standard library only.
 - **Reproducible:** configurable general/technical profiles and structured findings with severity levels.
-- **Safe-by-default edits:** the \`fix\` command only removes trailing whitespace while preserving Markdown hard breaks and fenced code blocks.
-- **Content safeguards:** the \`compare\` command detects changes to numbers/units, URLs, Markdown link destinations, reference markers, code, and explicitly configured protected terms.
+- **Safe-by-default edits:** the `fix` command only removes trailing whitespace while preserving Markdown hard breaks and fenced code blocks.
+- **Content safeguards:** the `compare` command detects changes to numbers/units, URLs, Markdown link destinations, reference markers, code, and explicitly configured protected terms.
 - **Auditable:** CLI exit codes, JSON output, a JSON report schema, fixtures, tests, and GitHub Actions.
 
-> **Scope:** These are heuristic writing-quality checks, not scientifically validated cutoffs for human cognitive load. Treat \`REVIEW\` findings as prompts for human judgment, not proven errors.
+> **Scope:** These are heuristic writing-quality checks, not scientifically validated cutoffs for human cognitive load. Treat `REVIEW` findings as prompts for human judgment, not proven errors.
 
 ## Quick start
 
 Run the commands from the repository root with Python 3.10 or newer. No installation is required.
 
-\`\`\`bash
+```bash
 # Inspect a Japanese Markdown document; make WARN findings fail the gate.
 python -m jp_writing_quality lint fixtures/verbose.md --profile technical --format text --fail-on warn
 
@@ -35,20 +35,20 @@ python -m jp_writing_quality compare fixtures/verbose.md fixtures/revised.md --p
 
 # Run the regression test suite.
 python -m unittest discover -s tests -v
-\`\`\`
+```
 
 Optional editable installation (may need a build backend):
 
-\`\`\`bash
+```bash
 pip install -e .
 jp-writing-lint lint fixtures/verbose.md --profile technical
-\`\`\`
+```
 
-**Exit codes:** \`0\` = selected quality gate passed; \`1\` = findings triggered the selected quality gate; \`2\` = command, configuration, or I/O error.
+**Exit codes:** `0` = selected quality gate passed; `1` = findings triggered the selected quality gate; `2` = command, configuration, or I/O error.
 
 ## Repository layout
 
-\`\`\`text
+```text
 New-Humanizer/
 ├── README.md                         # English documentation (default)
 ├── README.ja.md                      # Japanese documentation
@@ -67,42 +67,42 @@ New-Humanizer/
 ├── schema/                            # JSON report schema
 ├── tests/                             # regression tests
 └── .github/workflows/quality.yml     # CI checks
-\`\`\`
+```
 
 ## Profiles and custom rules
 
-Use \`--profile general\` for general writing and \`--profile technical\` for technical documentation.
+Use `--profile general` for general writing and `--profile technical` for technical documentation.
 
-Numeric thresholds in the built-in profiles are **adjustable defaults**, not universal cognitive-load thresholds. To override them, create a JSON file such as \`team-rules.json\`:
+Numeric thresholds in the built-in profiles are **adjustable defaults**, not universal cognitive-load thresholds. To override them, create a JSON file such as `team-rules.json`:
 
-\`\`\`json
+```json
 {
   "sentence_warn_chars": 80,
   "sentence_error_chars": 140,
   "max_commas": 4,
   "protected_terms": ["Azure", "PostgreSQL", "Modbus-TCP"]
 }
-\`\`\`
+```
 
-\`\`\`bash
+```bash
 python -m jp_writing_quality lint document.md --profile technical --rules team-rules.json --fail-on warn
 python -m jp_writing_quality compare original.md revised.md --profile technical --rules team-rules.json --fail-on error
-\`\`\`
+```
 
-The checker reports issues as **ERROR**, **WARN**, or **REVIEW**. Select the quality-gate strictness with \`--fail-on none|error|warn|review\`. A \`review\` threshold is the strictest; a \`none\` threshold never fails on findings.
+The checker reports issues as **ERROR**, **WARN**, or **REVIEW**. Select the quality-gate strictness with `--fail-on none|error|warn|review`. A `review` threshold is the strictest; a `none` threshold never fails on findings.
 
 ## Using the Agent Skill
 
-Keep \`SKILL.md\` together with the Python package and configuration files. An agent needs **both** the skill instructions and an environment in which it can run Python.
+Keep `SKILL.md` together with the Python package and configuration files. An agent needs **both** the skill instructions and an environment in which it can run Python.
 
-For example, a Claude Code project-local skill can be placed in \`.claude/skills/japanese-writing-quality/\`. Copy the complete project content needed by the CLI, not only \`SKILL.md\`. See [SKILL.md](SKILL.md) for the agent workflow.
+For example, a Claude Code project-local skill can be placed in `.claude/skills/japanese-writing-quality/`. Copy the complete project content needed by the CLI, not only `SKILL.md`. See [SKILL.md](SKILL.md) for the agent workflow.
 
 A typical workflow is:
 
 1. Save the original Japanese document.
-2. Run \`lint\`, inspect its output and exit status.
+2. Run `lint`, inspect its output and exit status.
 3. Apply safe formatting or propose targeted wording changes.
-4. Run \`compare\` against the original and recheck the revised document.
+4. Run `compare` against the original and recheck the revised document.
 5. Report remaining findings and any changes that need human approval.
 
 **Do not claim a quality-gate pass without executing the CLI.** In an environment without code execution, the agent can make suggestions but cannot verify a deterministic gate.
